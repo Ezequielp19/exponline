@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center" style="color: #ffffff;">Categorias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <!-- Sección de Categorías -->
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="4" *ngFor="let categoria of categorias">
+        <ion-card (click)="onCategoriaClick(categoria.id)">
+          <img [src]="categoria.imagen" *ngIf="categoria.imagen" alt="{{ categoria.nombre }}">
+          <ion-card-header>
+            <ion-card-title>{{ categoria.nombre }}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+
+
+
+    <!-- Sección de Productos de la Categoría Seleccionada -->
+    <ion-row *ngIf="productos.length > 0">
+      <ion-col size="12">
+        <h2>Productos de {{ selectedCategoria?.nombre }}</h2>
+      </ion-col>
+      <ion-col size="12" size-md="6" size-lg="4" *ngFor="let producto of productos">
+        <ion-card>
+          <img [src]="producto.imagen" *ngIf="producto.imagen" alt="{{ producto.nombre }}">
+          <ion-card-header>
+            <ion-card-title>{{ producto.nombre }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>{{ producto.descripcion }}</p>
+            <p><strong>Precio:</strong> {{ producto.precio }}</p>
+            <p><strong>Precio Final:</strong> {{ producto.precioFinal }}</p>
+            <p><strong>Marca:</strong> {{ producto.marca }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

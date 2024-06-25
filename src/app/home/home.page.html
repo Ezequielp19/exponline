@@ -1,0 +1,170 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row class="navbar-container">
+
+        <!-- Logo Section -->
+        <ion-col size="2">
+          <img src="../../assets/logofinal.png" alt="aca va el logo" class="logo">
+        </ion-col>
+
+        <!-- Searchbar Section -->
+        <ion-col size="5">
+          <ion-searchbar placeholder="Buscar productos" (ionInput)="search($event)"></ion-searchbar>
+          <div *ngIf="productosFiltrados.length > 0" class="search-results">
+            <ion-list>
+              <ion-item *ngFor="let product of productosFiltrados">
+                <ion-thumbnail slot="start">
+                  <img [src]="product.imagen" />
+                </ion-thumbnail>
+                <ion-label>
+                  <h2>{{ product.nombre }}</h2>
+                  <p>Consumidor: ${{ product.precioFinal }}</p>
+                  <p>Distribuidor: ${{ product.precioDistribuidor }}</p>
+                </ion-label>
+                <ion-button fill="clear" color="primary" (click)="navigateToDetail(product)">Ver</ion-button>
+                <ion-button fill="clear" color="primary" (click)="closeSearchResults()">Cerrar</ion-button>
+              </ion-item>
+            </ion-list>
+          </div>
+        </ion-col>
+
+        <!-- User Info and Contact Section -->
+        <ion-col size="3">
+          <span class="contact-info">Cons. Final: 5491167589362</span>
+          <ng-container *ngIf="user$ | async as user; else loginButton">
+            <p>Bienvenido, {{ user.email }}</p>
+            <ion-button (click)="logout()">Cerrar sesión</ion-button>
+          </ng-container>
+
+          <ng-template #loginButton>
+            <ion-button fill="outline" color="light" (click)="navigateTologin()">
+              <ion-icon slot="start" name="log-in-outline"></ion-icon>
+              Iniciar Sesión
+            </ion-button>
+          </ng-template>
+        </ion-col>
+
+        <!-- Social Media Icons Section -->
+        <ion-col size="2" class="contact-icons">
+          <ion-icon name="mail-outline"></ion-icon>
+          <ion-icon name="logo-facebook"></ion-icon>
+          <ion-icon name="logo-instagram"></ion-icon>
+          <ion-icon name="logo-whatsapp" (click)="openLink('https://wa.me/5491167554362')"></ion-icon>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<br>
+
+<ion-content>
+
+ <!-- Main Navigation -->
+
+   <ion-segment>
+      <ion-segment-button value="marcas" (click)="navigateToAfip()" >
+        Marcas
+      </ion-segment-button>
+      <ion-segment-button value="productos"  (click)="navigateToF931()" >
+        Productos
+      </ion-segment-button>
+      <ion-segment-button value="categoria" (click)="navigateToCertificacion()" >
+        Categoria
+      </ion-segment-button>
+      <ion-segment-button value="Login" (click)="navigateTologin()" >
+        <ng-container >
+          Perfil
+        </ng-container>
+        <ng-template #loginRegister>
+          Iniciar Sesión / Registrarse
+        </ng-template>
+      </ion-segment-button>
+    </ion-segment>
+
+
+
+
+<div class="container d-flex justify-content-center">
+  <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active d-flex justify-content-center">
+        <img class="d-block w-100" src="../../assets/banner-p20s-total.jpg" alt="First slide">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- Productos -->
+
+<div class="container mt-4">
+   <div class="row align-items-center mb-3">
+     <div class="col">
+       <h4 class="text-center mb-3">Productos Recomendados</h4>
+     </div>
+</div>
+ </div>
+
+<ion-grid>
+  <ion-row>
+    <ion-col size="12" size-md="6" size-lg="3" *ngFor="let product of productos | slice:0:8">
+      <ion-card>
+        <div class="image-container" (click)="navigateToDetail(product)">
+          <img [src]="product.imagen" [alt]="product.nombre" />
+          <div class="overlay" (click)="navigateToDetail(product)">
+            <p>Más Info</p>
+          </div>
+        </div>
+
+        <ion-card-content>
+          <h2>{{ product.nombre }}</h2>
+          <p>Precios:</p>
+          <p>Distribuidor: ${{ product.precioDistribuidor }}</p>
+          <p>Consumidor: ${{ product.precioFinal }}</p>
+          <ion-button expand="full" color="primary" (click)="navigateToDetail(product)">Ver mas</ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+
+
+
+
+
+
+
+
+<br>
+
+<!-- Floating WhatsApp Button -->
+<!-- <a href="https://wa.me/5491167554362" class="whatsapp-float" target="_blank"> -->
+<a href="https://wa.me/3417532800" class="whatsapp-float" target="_blank">
+  <ion-icon name="logo-whatsapp"></ion-icon>
+</a>
+
+
+  </ion-content>
+
+
+
+
+
+<ion-footer class="text-center">
+  <p>&copy; 2024 Derechos Reservados | Desarrollado por <a href="https://www.ateneasoftware.net" target="_blank">Ateneasoftware.net</a></p>
+  <img src="./assets/iconoAtenea.webp" alt="Icono de la empresa" style="width: 150px; "  >
+
+</ion-footer>
+
+
+
+
