@@ -23,13 +23,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Marca } from '../../common/models/marca.model';
 import { Producto } from 'src/app/common/models/producto.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-afip',
   templateUrl: './afip.component.html',
   styleUrls: ['./afip.component.scss'],
   standalone: true,
-  imports: [IonModal, IonFabButton, IonImg, IonSpinner, IonButtons, IonBackButton,
+  imports: [IonModal, IonFabButton, IonImg, IonSpinner, IonButton,IonButtons, IonBackButton,
     IonHeader,
     IonTitle,
     IonToolbar,
@@ -63,7 +64,7 @@ export class AfipComponent implements OnInit {
   selectedMarca: Marca | undefined;
 
 
-  constructor(private firestoreService: FirestoreService) {}
+  constructor(private firestoreService: FirestoreService, private router: Router) {}
 
  async ngOnInit() {
     this.marcas = await this.firestoreService.getMarcas();
@@ -95,6 +96,11 @@ export class AfipComponent implements OnInit {
   onMarcaClick(marcaId: string) {
     this.loadProductosByMarca(marcaId);
   }
+
+
+  navigateToDetail(product:Producto){
+  this.router.navigate(['/product', product.id]);
+}
 
 
 

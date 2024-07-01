@@ -3,16 +3,61 @@ ion-toolbar {
 }
 
 /* Estilos generales */
-ion-content {
-  --background: #34495E
-}
+// ion-content {
+//   --background: #34495E
+// }
+
+// ion-searchbar {
+//   --background: var(--ion-color-light);
+//   --color: var(--ion-color-dark);
+//   width: 100%;
+//   max-width: 600px;
+// }
+
 
 ion-searchbar {
-  --background: var(--ion-color-light);
-  --color: var(--ion-color-dark);
-  width: 100%;
-  max-width: 600px;
+  // --background: var(--ion-color-light);
+  // --color: var(--ion-color-dark);
+
+   --background: #ffffff; /* Fondo blanco */
+  --color: #000000; /* Texto negro */
+
+  flex: 1;
+  margin: 0 10px;
 }
+
+ion-button {
+  --color: var(--ion-color-light);
+}
+
+.search-container {
+  position: relative;
+  z-index: 2000; /* Asegúrate de que el contenedor de búsqueda tenga un z-index mayor */
+}
+
+.search-results {
+  background-color: #ffffff; /* Fondo blanco */
+  color: #000000; /* Texto negro */
+  border-radius: 5px;
+  z-index: 2000;
+  max-height: 200px;
+  // overflow-y: auto;
+  // width: 100%;
+  // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+// .search-results ion-item {
+//   --background: rgb(18, 22, 24);
+// }
+
+// .search-results ion-item:hover {
+//   background-color: #1b94cc;
+// }
+
+.search-results ion-thumbnail img {
+  border-radius: 5px;
+}
+
 
 ion-button {
   --color: var(--ion-color-light);
@@ -77,10 +122,13 @@ ion-card img {
 
 .logo {
   width: 120px;
+
 }
 
 .contact-icons ion-icon {
-  margin: 0 5px;
+  margin:  5px;
+  // width: 80p;
+
 }
 
 .contact-info {
@@ -95,6 +143,11 @@ ion-card img {
   text-align: center;
 }
 
+.contact-icons ion-icon {
+  font-size: 24px;
+  margin: 0 5px;
+  color: #ffffff; /* Color blanco para los iconos */
+}
 
 
 // .carousel-item img {
@@ -162,20 +215,8 @@ ion-card {
 }
 
 
-.search-results {
-  position: absolute;
-  width: 100%;
-  background: white;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 1000;
-  border: 1px solid #ccc;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
 
-.search-results ion-item {
-  --background: transparent;
-}
+
 .show-details {
   display: block;
 }
@@ -290,9 +331,23 @@ ion-button {
   margin: 0 5px;
 }
 
+.scrollable {
+  max-height: 200px; /* Ajusta esta altura según sea necesario */
+  overflow-y: auto;
+}
 
 
+ion-title {
+  color: white; /* Color blanco para el título */
+}
 
+ion-button {
+  --color: white; /* Color blanco para el texto del botón */
+}
+
+ion-icon {
+  color: white; /* Color blanco para los iconos */
+}
 
 
 

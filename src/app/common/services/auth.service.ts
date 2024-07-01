@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 })
 export class AuthService {
   user$: Observable<any>;
+  afs: any;
  constructor(private afAuth: AngularFireAuth, private router: Router) {
     this.user$ = this.afAuth.authState.pipe(
       map(user => {
@@ -59,4 +60,22 @@ export class AuthService {
       console.log('Error during logout:', error);
     }
   }
+
+
+
+   async getAllUsers(): Promise<UserI[]> {
+    try {
+      const userRecords = await this.afs.collection('users').get().toPromise();
+      const users = userRecords.docs.map((doc: { id: any; data: () => any; }) => ({
+        id: doc.id,
+        ...doc.data()
+      })) as UserI[];
+      console.log('Usuarios obtenidos:', users); // Agregar console.log aquí
+      return users;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return [];
+    }
+  }
+
 }

@@ -1,0 +1,19 @@
+
+ <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+<div class="cart-container" *ngIf="cartItems.length > 0">
+  <ul class="cart-list">
+    <li class="cart-item" *ngFor="let item of cartItems">
+      <span class="item-name">{{item.producto.nombre}}</span>
+      <span class="item-quantity">{{item.cantidad}} x</span>
+      <span class="item-price">{{item.producto.precio | currency }}</span>
+      <ion-button color="danger" (click)="removeFromCart(item.producto)">Eliminar</ion-button>
+    </li>
+  </ul>
+  <p class="cart-total">Total: {{total | currency }}</p>
+  <button class="cart-buy-button" (click)="buy()">Comprar</button>
+</div>
+<div class="cart-empty" *ngIf="cartItems.length === 0">
+  <p>No hay productos en el carrito</p>
+</div>

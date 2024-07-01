@@ -1,26 +1,26 @@
+
+
+
 <ion-header>
   <ion-toolbar>
     <ion-grid>
       <ion-row class="navbar-container">
-
-        <!-- Logo Section -->
         <ion-col size="2">
-          <img src="../../assets/logofinal.png" alt="aca va el logo" class="logo">
+          <img src="../../assets/logofinal.png" alt="Logo" class="logo">
         </ion-col>
-
-        <!-- Searchbar Section -->
-        <ion-col size="5">
+        <ion-col size="5" class="search-container" >
           <ion-searchbar placeholder="Buscar productos" (ionInput)="search($event)"></ion-searchbar>
-          <div *ngIf="productosFiltrados.length > 0" class="search-results">
-            <ion-list>
+          <div *ngIf="productosFiltrados.length > 0" class="search-results scrollable">
+            <ion-list >
               <ion-item *ngFor="let product of productosFiltrados">
                 <ion-thumbnail slot="start">
                   <img [src]="product.imagen" />
                 </ion-thumbnail>
                 <ion-label>
                   <h2>{{ product.nombre }}</h2>
-                  <p>Consumidor: ${{ product.precioFinal }}</p>
-                  <p>Distribuidor: ${{ product.precioDistribuidor }}</p>
+                  <p>Codigo: ${{ product.codigo }}</p>
+                  <p>Precio Final: ${{ product.precioFinal }}</p>
+
                 </ion-label>
                 <ion-button fill="clear" color="primary" (click)="navigateToDetail(product)">Ver</ion-button>
                 <ion-button fill="clear" color="primary" (click)="closeSearchResults()">Cerrar</ion-button>
@@ -28,35 +28,29 @@
             </ion-list>
           </div>
         </ion-col>
-
-        <!-- User Info and Contact Section -->
         <ion-col size="3">
-          <span class="contact-info">Cons. Final: 5491167589362</span>
           <ng-container *ngIf="user$ | async as user; else loginButton">
-            <p>Bienvenido, {{ user.email }}</p>
+            <p style="color: white;">Bienvenido {{ user.nombre }} </p>
             <ion-button (click)="logout()">Cerrar sesión</ion-button>
           </ng-container>
-
           <ng-template #loginButton>
-            <ion-button fill="outline" color="light" (click)="navigateTologin()">
+            <ion-button fill="outline" color="light" (click)="navigateTologin()" >
               <ion-icon slot="start" name="log-in-outline"></ion-icon>
               Iniciar Sesión
             </ion-button>
           </ng-template>
         </ion-col>
-
-        <!-- Social Media Icons Section -->
         <ion-col size="2" class="contact-icons">
           <ion-icon name="mail-outline"></ion-icon>
           <ion-icon name="logo-facebook"></ion-icon>
-          <ion-icon name="logo-instagram"></ion-icon>
+          <ion-icon name="logo-instagram" (click)="openInstgram()"></ion-icon>
           <ion-icon name="logo-whatsapp" (click)="openLink('https://wa.me/5491167554362')"></ion-icon>
         </ion-col>
-
       </ion-row>
     </ion-grid>
   </ion-toolbar>
 </ion-header>
+
 
 
 
@@ -68,19 +62,19 @@
 
    <ion-segment>
       <ion-segment-button value="marcas" (click)="navigateToAfip()" >
-        Marcas
+        <strong>Marcas  </strong>
       </ion-segment-button>
       <ion-segment-button value="productos"  (click)="navigateToF931()" >
-        Productos
+         <strong> Productos </strong>
       </ion-segment-button>
       <ion-segment-button value="categoria" (click)="navigateToCertificacion()" >
-        Categoria
+         <strong> Categoria </strong>
       </ion-segment-button>
       <ion-segment-button value="Login" (click)="navigateTologin()" >
         <ng-container >
-          Perfil
+           <strong>Perfil </strong>
         </ng-container>
-        <ng-template #loginRegister>
+        <ng-template #loginRegister  >
           Iniciar Sesión / Registrarse
         </ng-template>
       </ion-segment-button>
@@ -125,11 +119,10 @@
         </div>
 
         <ion-card-content>
-          <h2>{{ product.nombre }}</h2>
-          <p>Precios:</p>
-          <p>Distribuidor: ${{ product.precioDistribuidor }}</p>
-          <p>Consumidor: ${{ product.precioFinal }}</p>
-          <ion-button expand="full" color="primary" (click)="navigateToDetail(product)">Ver mas</ion-button>
+          <h2> <strong>{{ product.nombre }}  </strong></h2>
+          <p> <strong>  Precio Final: ${{ product.precioFinal }} </strong> </p>
+
+          <ion-button expand="full" color="primary" (click)="navigateToDetail(product)" > Ver mas</ion-button>
         </ion-card-content>
       </ion-card>
     </ion-col>
@@ -152,6 +145,12 @@
   <ion-icon name="logo-whatsapp"></ion-icon>
 </a>
 
+
+ <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="goToCart()">
+      <ion-icon name="cart"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
   </ion-content>
 

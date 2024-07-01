@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonHeader, IonToolbar, IonFooter,IonSegment,IonCardHeader, IonThumbnail, IonCardTitle, IonCardContent, IonCardSubtitle, IonSegmentButton, IonChip,IonAvatar, IonSearchbar,IonApp, IonTitle, IonContent, IonLabel, IonList, IonItem, IonCard, IonInput, IonSpinner, IonButtons, IonButton, IonIcon, IonImg, IonCol, IonRow, IonBackButton, IonGrid } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonFab, IonFabButton, IonFooter,IonSegment,IonCardHeader, IonThumbnail, IonCardTitle, IonCardContent, IonCardSubtitle, IonSegmentButton, IonChip,IonAvatar, IonSearchbar,IonApp, IonTitle, IonContent, IonLabel, IonList, IonItem, IonCard, IonInput, IonSpinner, IonButtons, IonButton, IonIcon, IonImg, IonCol, IonRow, IonBackButton, IonGrid } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 
 import { IoniconsModule } from '../common/modules/ionicons.module';
@@ -20,8 +20,8 @@ import { AuthService } from '../common/services/auth.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonGrid, IonBackButton, IonRow, IonCol, IonImg, IonList, IonLabel, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonInput,
-    IonIcon, IonButton, IonButtons, IonSpinner, IonInput, IonCard,
+  imports: [IonGrid, IonBackButton, IonRow, IonCol, IonFabButton, IonImg, IonList, IonLabel, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonInput,
+    IonIcon, IonButton, IonButtons,IonFab, IonSpinner, IonInput, IonCard,
     FormsModule,
     IoniconsModule,
     CommonModule,
@@ -47,8 +47,8 @@ productosFiltrados: Producto[] = [];
 producto: Producto | undefined;
 
  showMasInfo = false;
-selectedProduct: any;
   user$: Observable<any | null> = this.authService.user$;
+selectedProduct: any;
 
 
 // Método para mostrar los detalles del producto al pasar el mouse
@@ -67,6 +67,10 @@ selectedProduct: any;
   window.open(whatsappUrl, '_blank');
 }
 
+openInstgram(){
+const instagramUrl= "https://www.instagram.com/expotools_/";
+window.open(instagramUrl, '_blank')
+}
 
 comprar() {
     const message = `Hola, estoy interesado en el producto ${this.producto.nombre}`;
@@ -141,10 +145,6 @@ navigateToDetail(product:Producto){
 
 
 
-
-
-
-
  async ngOnInit() {
 
 
@@ -156,7 +156,7 @@ this.clearSearch();
   }
 
    closeSearchResults() {
-    this.productosFiltrados = []; // Vacía el array de productos filtrados para ocultar la lista
+    this.productosFiltrados = [];
   }
 
     clearSearch() {
@@ -168,8 +168,8 @@ this.clearSearch();
 
  async cargarProductos() {
     this.productos = await this.firestoreService.getProductos();
-    this.productosFiltrados = this.productos;
-    console.log('Productos obtenidos:', this.productos);
+    // this.productosFiltrados = this.productos;
+      this.productosFiltrados = [];
   }
 
 
@@ -209,6 +209,9 @@ async mostrarAlertaBienvenida(nombre: string) {
     window.open(url, '_blank');
   }
 
+goToCart() {
+    this.router.navigate(['/carrito']);
+  }
 
 }
 

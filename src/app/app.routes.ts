@@ -10,6 +10,10 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('../app/views/login/login.component').then((m) => m.LoginComponent),
   },
+    {
+    path: 'carrito',
+    loadComponent: () => import('../app/views/carrito/carrito.component').then((m) => m.CarritoComponent),
+  },
   {
     path: 'certificacion',
     loadComponent: () => import('./views/cert-ingresos/cert-ingresos.component').then((m) => m.CertIngresosComponent),

@@ -3,7 +3,12 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title class="ion-text-center" style="color: #ffffff;">Detalles del Producto</ion-title>
+    <ion-title class="ion-text-center" style="color: #1025df;">  <strong> Detalles del Producto </strong> </ion-title>
+     <ion-buttons slot="end">
+      <ion-button (click)="goToCart()">
+        <ion-icon name="cart-outline" style="color: rgb(20, 7, 145);  width: 40px; height: 40px; "></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -13,13 +18,13 @@
       <img [src]="producto.imagen" [alt]="producto.nombre" class="product-image"/>
     </ion-card-header>
     <ion-card-content>
-      <h2 class="product-title">{{ producto.nombre }}</h2>
-      <p class="product-description">{{ producto.descripcion }}</p>
+      <h2 class="product-title"> <strong>  {{ producto.nombre }}</strong></h2>
+      <p class="product-description">  <strong> {{ producto.descripcion }} </strong></p>
       <p><strong>Precio Consumidor:</strong> ${{ producto.precioFinal }}</p>
-      <p><strong>Precio Distribuidor:</strong> ${{ producto.precioDistribuidor || 'N/A' }}</p>
+      <p><strong>Codigo:</strong> ${{ producto.codigo  }}</p>
       <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
       <p><strong>Marca:</strong> {{ producto.marca.nombre }}</p>
-      <ion-button expand="full" color="primary" (click)="comprar()">Comprar</ion-button>
+      <ion-button expand="full" color="primary" (click)="addToCart(producto)"  style="color: white;">Agregar 🛒</ion-button>
     </ion-card-content>
 
   </ion-card>

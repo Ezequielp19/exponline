@@ -121,7 +121,7 @@ async getCategoriaById(id: string): Promise<Categoria | undefined> {
         descripcion: data['descripcion'],
         precio: data['precio'],
         precioFinal: data['precioFinal'] || null,
-        precioDistribuidor: data['precioDistribuidor'] || null,
+        codigo: data['codigo'],
         etiqueta: data['etiqueta'],
         categoria: data['categoria'],
         marca: data['marca'],

@@ -6,13 +6,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Categoria } from 'src/app/common/models/categoria.model';
 import { Producto } from 'src/app/common/models/producto.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cert-ingresos',
   templateUrl: './cert-ingresos.component.html',
   styleUrls: ['./cert-ingresos.component.scss'],
   standalone: true,
-  imports: [IonToolbar, IonBackButton, IonTitle, IonButtons, IonHeader, IonItem, IonInput, IonLabel, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonList, IonCardContent, IonSelect, IonSelectOption, CommonModule, FormsModule],
+  imports: [IonToolbar, IonBackButton, IonTitle, IonButtons, IonButton, IonHeader, IonItem, IonInput, IonLabel, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonList, IonCardContent, IonSelect, IonSelectOption, CommonModule, FormsModule],
 })
 export class CertIngresosComponent implements OnInit {
 
@@ -20,7 +21,7 @@ export class CertIngresosComponent implements OnInit {
   productos: Producto[] = [];
   selectedCategoria: Categoria | undefined;
 
-  constructor(private firestoreService: FirestoreService) {}
+  constructor(private firestoreService: FirestoreService,private router: Router,) {}
 
   async ngOnInit() {
     this.loadCategories();
@@ -47,5 +48,9 @@ export class CertIngresosComponent implements OnInit {
   onCategoriaClick(categoriaId: string) {
     this.loadProductosByCategoria(categoriaId);
   }
+
+  navigateToDetail(product:Producto){
+  this.router.navigate(['/product', product.id]);
+}
 
 }
