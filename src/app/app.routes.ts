@@ -45,6 +45,13 @@ export const routes: Routes = [
     path: 'product/:id',
     loadComponent: () => import('./views/plan-pago/product-detail.component').then((m) => m.ProductDetailComponent),
   },
+
+   {
+    path: 'productOferta/:id',
+    loadComponent: () => import('./views/oferta/oferta.component').then((m) => m.ProductofertaDetailComponent),
+  },
+
+
   {
     path: 'register',
     loadComponent: () => import('./views/recibo-sueldo/register.component').then((m) => m.RegisterComponent),

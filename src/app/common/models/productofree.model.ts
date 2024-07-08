@@ -9,7 +9,7 @@ export interface Productoferta {
   precioFinal?: number;
   codigo: string;
   etiqueta: string;
-  categoria: DocumentReference; // Referencia a la categoría
-  marca: DocumentReference;    // Referencia a la marca
+  categoria: { id: string, nombre: string }; // Referencia a la categoría con nombre
+  marca: { id: string, nombre: string };
   imagen: string;              // URL de la imagen
 }

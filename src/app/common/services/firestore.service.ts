@@ -157,6 +157,22 @@ async getCategoriaById(id: string): Promise<Categoria | undefined> {
   }
 
 
+async getProductosOfertaByCategoria(categoriaId: string): Promise<Productoferta[]> {
+  const productosSnapshot = await getDocs(
+    query(collection(this.firestore, 'productofertas'), where('categoria.id', '==', categoriaId))
+  );
+  return productosSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Productoferta[];
+}
+
+
+async getProductosOfertaByMarca(marcaId: string): Promise<Productoferta[]> {
+  const productosSnapshot = await getDocs(
+    query(collection(this.firestore, 'productofertas'), where('marca.id', '==', marcaId))
+  );
+  return productosSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Productoferta[];
+}
+
+
 
   getFirestoreInstance(): Firestore {
     return this.firestore;
@@ -405,6 +421,11 @@ async getCategoriaById(id: string): Promise<Categoria | undefined> {
 
 
 
+ async getProductofertaById(id: string): Promise<Productoferta | undefined> {
+    const docRef = doc(this.firestore, 'productofertas', id);
+    const docSnap = await getDoc(docRef);
+    return docSnap.exists() ? ({ id: docSnap.id, ...docSnap.data() } as Productoferta) : undefined;
+  }
 
 
 

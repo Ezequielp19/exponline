@@ -159,6 +159,10 @@ navigateToDetail(product:Producto){
   this.router.navigate(['/product', product.id]);
 }
 
+navigateToDetailOferta(productOfer:Productoferta){
+  this.router.navigate(['/productOferta', productOfer.id]);
+}
+
 
 
  async ngOnInit() {

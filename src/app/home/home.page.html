@@ -7,22 +7,7 @@
         </ion-col>
         <ion-col size="5" class="search-container">
           <ion-searchbar placeholder="Buscar productos" (ionInput)="search($event)"></ion-searchbar>
-          <!-- <div *ngIf="productosFiltrados.length > 0" class="search-results scrollable">
-            <ion-list>
-              <ion-item *ngFor="let product of productosFiltrados">
-                <ion-thumbnail slot="start">
-                  <img [src]="product.imagen" />
-                </ion-thumbnail>
-                <ion-label>
-                  <h2>{{ product.nombre }}</h2>
-                  <p>Codigo: ${{ product.codigo }}</p>
-                  <p>Precio Final: ${{ product.precioFinal }}</p>
-                </ion-label>
-                <ion-button fill="clear" color="primary" (click)="navigateToDetail(product)">Ver</ion-button>
-                <ion-button fill="clear" color="primary" (click)="closeSearchResults()">Cerrar</ion-button>
-              </ion-item>
-            </ion-list>
-          </div> -->
+
         </ion-col>
         <ion-col size="3">
           <ng-container *ngIf="user$ | async as user; else loginButton">
@@ -90,6 +75,45 @@
       </ion-row>
     </ion-grid>
 
+
+    <!-- Productos en Oferta -->
+    <div class="container mt-4" *ngIf="productOferta && productOferta.length > 0">
+      <div class="row align-items-center mb-3">
+        <div class="col">
+          <h4 class="text-center mb-3">¡¡Productos en Oferta!!</h4>
+        </div>
+      </div>
+    </div>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6" size-lg="3" *ngFor="let oferta of productOferta | slice:0:8">
+          <ion-card>
+            <div class="image-container" (click)="navigateToDetailOferta(oferta)">
+              <img [src]="oferta.imagen" [alt]="oferta.nombre" />
+              <div class="overlay" (click)="navigateToDetailOferta(oferta)">
+                <p>Más Info</p>
+              </div>
+            </div>
+            <ion-card-content>
+              <h2><strong>{{ oferta.nombre }}</strong></h2>
+              <p><strong>Precio Final: ${{ oferta.precioFinal }}</strong></p>
+              <ion-button expand="full" color="primary" (click)="navigateToDetailOferta(oferta)">Ver más</ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+
+
+
+
+
+
+
+
     <div class="container mt-4">
       <div class="row align-items-center mb-3">
         <div class="col">
@@ -135,6 +159,20 @@
     </ion-list>
   </div>
 </ion-content>
+
+<!-- Botón flotante de WhatsApp -->
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button color="success" (click)="openWhatsApp()">
+    <ion-icon name="logo-whatsapp" color="light"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<!-- Botón flotante de carrito de compras -->
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" style="margin-bottom: 80px;">
+  <ion-fab-button color="primary" (click)="goToCart()">
+    <ion-icon name="cart"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 
 <ion-footer class="text-center">
   <p>&copy; 2024 Derechos Reservados | Desarrollado por <a href="https://www.ateneasoftware.net" target="_blank">Ateneasoftware.net</a></p>

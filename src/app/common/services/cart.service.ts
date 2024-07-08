@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CartItem } from '../models/carrito.models';
 import { Producto } from '../models/producto.model';
+import { Productoferta } from '../models/productofree.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,23 +17,20 @@ export class CartService {
     return this.cartSubject.asObservable();
   }
 
-
-  addToCart(producto: Producto, cantidad: number = 1) {
-    const index = this.items.findIndex(item => item.producto.id === producto.id);
-    if (index !== -1) {
-      this.items[index].cantidad += cantidad;
+  addToCart(product: Producto | Productoferta, cantidad: number = 1) {
+    const existingIndex = this.items.findIndex(item => item.producto.id === product.id);
+    if (existingIndex !== -1) {
+      this.items[existingIndex].cantidad += cantidad;
     } else {
-      this.items.push({ producto, cantidad });
+      this.items.push({ producto: product as Producto, cantidad });
     }
     this.cartSubject.next(this.items);
   }
 
-  removeFromCart(producto: Producto) {
-    this.items = this.items.filter(item => item.producto.id !== producto.id);
+  removeFromCart(product: Producto | Productoferta) {
+    this.items = this.items.filter(item => item.producto.id !== product.id);
     this.cartSubject.next(this.items);
   }
-
-
 
   clearCart() {
     this.items = [];
