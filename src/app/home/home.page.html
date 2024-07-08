@@ -1,6 +1,3 @@
-
-
-
 <ion-header>
   <ion-toolbar>
     <ion-grid>
@@ -8,10 +5,10 @@
         <ion-col size="2">
           <img src="../../assets/logofinal.png" alt="Logo" class="logo">
         </ion-col>
-        <ion-col size="5" class="search-container" >
+        <ion-col size="5" class="search-container">
           <ion-searchbar placeholder="Buscar productos" (ionInput)="search($event)"></ion-searchbar>
-          <div *ngIf="productosFiltrados.length > 0" class="search-results scrollable">
-            <ion-list >
+          <!-- <div *ngIf="productosFiltrados.length > 0" class="search-results scrollable">
+            <ion-list>
               <ion-item *ngFor="let product of productosFiltrados">
                 <ion-thumbnail slot="start">
                   <img [src]="product.imagen" />
@@ -20,13 +17,12 @@
                   <h2>{{ product.nombre }}</h2>
                   <p>Codigo: ${{ product.codigo }}</p>
                   <p>Precio Final: ${{ product.precioFinal }}</p>
-
                 </ion-label>
                 <ion-button fill="clear" color="primary" (click)="navigateToDetail(product)">Ver</ion-button>
                 <ion-button fill="clear" color="primary" (click)="closeSearchResults()">Cerrar</ion-button>
               </ion-item>
             </ion-list>
-          </div>
+          </div> -->
         </ion-col>
         <ion-col size="3">
           <ng-container *ngIf="user$ | async as user; else loginButton">
@@ -34,7 +30,7 @@
             <ion-button (click)="logout()">Cerrar sesión</ion-button>
           </ng-container>
           <ng-template #loginButton>
-            <ion-button fill="outline" color="light" (click)="navigateTologin()" >
+            <ion-button fill="outline" color="light" (click)="navigateTologin()">
               <ion-icon slot="start" name="log-in-outline"></ion-icon>
               Iniciar Sesión
             </ion-button>
@@ -51,119 +47,96 @@
   </ion-toolbar>
 </ion-header>
 
-
-
-
-<br>
-
 <ion-content>
-
- <!-- Main Navigation -->
-
-   <ion-segment>
-      <ion-segment-button value="marcas" (click)="navigateToAfip()" >
-        <strong>Marcas  </strong>
+  <div *ngIf="!isSearching">
+    <!-- Main Navigation -->
+    <ion-segment>
+      <ion-segment-button value="marcas" (click)="navigateToAfip()">
+        <strong>Marcas</strong>
       </ion-segment-button>
-      <ion-segment-button value="productos"  (click)="navigateToF931()" >
-         <strong> Productos </strong>
+      <ion-segment-button value="productos" (click)="navigateToF931()">
+        <strong>Productos</strong>
       </ion-segment-button>
-      <ion-segment-button value="categoria" (click)="navigateToCertificacion()" >
-         <strong> Categoria </strong>
+      <ion-segment-button value="categoria" (click)="navigateToCertificacion()">
+        <strong>Categoria</strong>
       </ion-segment-button>
-      <ion-segment-button value="Login" (click)="navigateTologin()" >
-        <ng-container >
-           <strong>Perfil </strong>
+      <ion-segment-button value="Login" (click)="navigateTologin()">
+        <ng-container>
+          <strong>Perfil</strong>
         </ng-container>
-        <ng-template #loginRegister  >
+        <ng-template #loginRegister>
           Iniciar Sesión / Registrarse
         </ng-template>
       </ion-segment-button>
     </ion-segment>
 
-
-
-
-<div class="container d-flex justify-content-center">
-  <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active d-flex justify-content-center">
-        <img class="d-block w-100" src="../../assets/banner-p20s-total.jpg" alt="First slide">
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-<!-- Productos -->
-
-<div class="container mt-4">
-   <div class="row align-items-center mb-3">
-     <div class="col">
-       <h4 class="text-center mb-3">Productos Recomendados</h4>
-     </div>
-</div>
- </div>
-
-<ion-grid>
-  <ion-row>
-    <ion-col size="12" size-md="6" size-lg="3" *ngFor="let product of productos | slice:0:8">
-      <ion-card>
-        <div class="image-container" (click)="navigateToDetail(product)">
-          <img [src]="product.imagen" [alt]="product.nombre" />
-          <div class="overlay" (click)="navigateToDetail(product)">
-            <p>Más Info</p>
+    <div class="container d-flex justify-content-center">
+      <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active d-flex justify-content-center">
+            <img class="d-block w-100" src="../../assets/banner-p20s-total.jpg" alt="First slide">
           </div>
         </div>
+      </div>
+    </div>
 
-        <ion-card-content>
-          <h2> <strong>{{ product.nombre }}  </strong></h2>
-          <p> <strong>  Precio Final: ${{ product.precioFinal }} </strong> </p>
+    <ion-grid class="marcas-scroll-container">
+      <ion-row>
+        <ion-col size="6" size-md="3" *ngFor="let marca of marcas">
+          <div class="marca-container" (click)="onMarcaClick(marca.id)">
+            <img [src]="marca.imagen" alt="{{ marca.nombre }}" style="width: 100px; height: 100px;" />
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
-          <ion-button expand="full" color="primary" (click)="navigateToDetail(product)" > Ver mas</ion-button>
-        </ion-card-content>
-      </ion-card>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+    <div class="container mt-4">
+      <div class="row align-items-center mb-3">
+        <div class="col">
+          <h4 class="text-center mb-3">Productos Recomendados</h4>
+        </div>
+      </div>
+    </div>
 
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6" size-lg="3" *ngFor="let product of productos | slice:0:8">
+          <ion-card>
+            <div class="image-container" (click)="navigateToDetail(product)">
+              <img [src]="product.imagen" [alt]="product.nombre" />
+              <div class="overlay" (click)="navigateToDetail(product)">
+                <p>Más Info</p>
+              </div>
+            </div>
+            <ion-card-content>
+              <h2><strong>{{ product.nombre }}</strong></h2>
+              <p><strong>Precio Final: ${{ product.precioFinal }}</strong></p>
+              <ion-button expand="full" color="primary" (click)="navigateToDetail(product)">Ver más</ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 
-
-
-
-
-
-
-
-<br>
-
-<!-- Floating WhatsApp Button -->
-<!-- <a href="https://wa.me/5491167554362" class="whatsapp-float" target="_blank"> -->
-<a href="https://wa.me/3417532800" class="whatsapp-float" target="_blank">
-  <ion-icon name="logo-whatsapp"></ion-icon>
-</a>
-
-
- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="goToCart()">
-      <ion-icon name="cart"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
-  </ion-content>
-
-
-
-
+  <div *ngIf="isSearching">
+    <ion-list>
+      <ion-item *ngFor="let product of productosFiltrados">
+        <ion-thumbnail slot="start">
+          <img [src]="product.imagen" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ product.nombre }}</h2>
+          <p>Codigo: {{ product.codigo }}</p>
+          <p>Precio Final: ${{ product.precioFinal }}</p>
+        </ion-label>
+        <ion-button fill="clear" color="primary" (click)="navigateToDetail(product)">Ver</ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
 
 <ion-footer class="text-center">
   <p>&copy; 2024 Derechos Reservados | Desarrollado por <a href="https://www.ateneasoftware.net" target="_blank">Ateneasoftware.net</a></p>
-  <img src="./assets/iconoAtenea.webp" alt="Icono de la empresa" style="width: 150px; "  >
-
+  <img src="./assets/iconoAtenea.webp" alt="Icono de la empresa" style="width: 150px;">
 </ion-footer>
-
-
-
-

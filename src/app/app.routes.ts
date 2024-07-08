@@ -50,6 +50,10 @@ export const routes: Routes = [
     loadComponent: () => import('./views/recibo-sueldo/register.component').then((m) => m.RegisterComponent),
   },
   {
+    path: 'productos-marca/:id',
+    loadComponent: () => import('./views/productos-marca/productos-marca.component').then((m) => m.ProductosMarcaComponent),
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',

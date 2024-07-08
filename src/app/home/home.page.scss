@@ -350,5 +350,12 @@ ion-icon {
 }
 
 
+.marcas-scroll-container {
+  overflow-x: auto; /* Habilita el desplazamiento horizontal */
+  white-space: nowrap; /* Evita que los elementos se envuelvan a la siguiente línea */
+}
+
+
+
 
 }

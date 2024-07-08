@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonHeader, IonToolbar, IonFab, IonFabButton, IonFooter,IonSegment,IonCardHeader, IonThumbnail, IonCardTitle, IonCardContent, IonCardSubtitle, IonSegmentButton, IonChip,IonAvatar, IonSearchbar,IonApp, IonTitle, IonContent, IonLabel, IonList, IonItem, IonCard, IonInput, IonSpinner, IonButtons, IonButton, IonIcon, IonImg, IonCol, IonRow, IonBackButton, IonGrid } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonFab,IonFabList,  IonFabButton, IonFooter,IonSegment,IonCardHeader, IonThumbnail, IonCardTitle, IonCardContent, IonCardSubtitle, IonSegmentButton, IonChip,IonAvatar, IonSearchbar,IonApp, IonTitle, IonContent, IonLabel, IonList, IonItem, IonCard, IonInput, IonSpinner, IonButtons, IonButton, IonIcon, IonImg, IonCol, IonRow, IonBackButton, IonGrid } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 
 import { IoniconsModule } from '../common/modules/ionicons.module';
@@ -11,6 +11,12 @@ import { CommonModule } from '@angular/common';
 import { Producto } from '../common/models/producto.model';
 import { Observable } from 'rxjs';
 import { AuthService } from '../common/services/auth.service';
+
+
+
+import { Marca } from '../common/models/marca.model';
+import { Productoferta } from '../common/models/productofree.model';
+
 
 
 
@@ -27,7 +33,7 @@ import { AuthService } from '../common/services/auth.service';
     CommonModule,
     IonChip,
     IonAvatar,
-
+IonFabList,
     IonThumbnail,
 IonFooter,
 IonCardHeader,
@@ -38,6 +44,7 @@ IonCardSubtitle,
     IonCardTitle,
     IonCardContent,
 
+
   ],
 })
 export class HomePage implements OnInit {
@@ -45,10 +52,18 @@ export class HomePage implements OnInit {
 productos: Producto[] = [];
 productosFiltrados: Producto[] = [];
 producto: Producto | undefined;
+ productOferta: Productoferta[] = [];
 
  showMasInfo = false;
   user$: Observable<any | null> = this.authService.user$;
 selectedProduct: any;
+
+marcas: Marca[] = [];
+
+
+  isSearching: boolean = false;  // Nueva variable de estado
+
+
 
 
 // Método para mostrar los detalles del producto al pasar el mouse
@@ -75,6 +90,7 @@ window.open(instagramUrl, '_blank')
 comprar() {
     const message = `Hola, estoy interesado en el producto ${this.producto.nombre}`;
     const whatsappUrl = `https://wa.me/5491167554362?text=${encodeURIComponent(message)}`;
+
     window.open(whatsappUrl, '_blank');
   }
 
@@ -150,21 +166,21 @@ navigateToDetail(product:Producto){
 
 
 await this.cargarProductos();
+  this.marcas = await this.firestoreService.getMarcas();
+this.cargarProductosOferta()
 
 this.clearSearch();
 
+  }
+
+   onMarcaClick(marcaId: string) {
+    this.router.navigate(['/productos-marca', marcaId]);
   }
 
    closeSearchResults() {
     this.productosFiltrados = [];
   }
 
-    clearSearch() {
-    const searchbar = document.querySelector('ion-searchbar');
-    if (searchbar) {
-      searchbar.value = ''; // Reinicia el valor del ion-searchbar a una cadena vacía
-    }
-  }
 
  async cargarProductos() {
     this.productos = await this.firestoreService.getProductos();
@@ -173,14 +189,31 @@ this.clearSearch();
   }
 
 
+//oferta
+  async cargarProductosOferta() {
+    this.productOferta = await this.firestoreService.getProductofertas();
+    console.log('Productos obtenidos de oferta:', this.productOferta);
+  }
+
+
+
   search(event: any) {
     const query = event.target.value.toLowerCase();
     if (query.trim() === '') {
       this.productosFiltrados = [];
+      this.isSearching = false;  // Cambia el estado de búsqueda
     } else {
       this.productosFiltrados = this.productos.filter(producto =>
         producto.nombre.toLowerCase().includes(query)
       );
+      this.isSearching = true;  // Cambia el estado de búsqueda
+    }
+  }
+
+  clearSearch() {
+    const searchbar = document.querySelector('ion-searchbar');
+    if (searchbar) {
+      searchbar.value = ''; // Reinicia el valor del ion-searchbar a una cadena vacía
     }
   }
 

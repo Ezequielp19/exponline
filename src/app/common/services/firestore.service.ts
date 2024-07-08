@@ -40,6 +40,7 @@ import { UserI } from '../models/users.models';
 import { Marca } from '../models/marca.model';
 import { Categoria } from '../models/categoria.model';
 import { Producto } from '../models/producto.model';
+import { Productoferta } from '../models/productofree.model';
 
 
 // Convertidor genérico para Firestore
@@ -375,6 +376,32 @@ async getCategoriaById(id: string): Promise<Categoria | undefined> {
       throw error;
     }
   }
+
+
+  // OFERTA // Añadir un nuevo producto OFERTA
+
+
+ async getProductofertas(): Promise<Productoferta[]> {
+  const ofertasSnapshot = await getDocs(
+    query(collection(this.firestore, 'productofertas'), orderBy('nombre'))
+  );
+  return ofertasSnapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      nombre: data['nombre'],
+      descripcion: data['descripcion'],
+      precio: data['precio'],
+      descuento: data['descuento'] || null,
+      precioFinal: data['precioFinal'] || null,
+      codigo: data['codigo'],
+      etiqueta: data['etiqueta'],
+      categoria: data['categoria'],
+      marca: data['marca'],
+      imagen: data['imagen'] || null,
+    } as Productoferta;
+  });
+}
 
 
 
