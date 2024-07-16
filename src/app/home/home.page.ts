@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonHeader, IonToolbar, IonFab,IonFabList,  IonFabButton, IonFooter,IonSegment,IonCardHeader, IonThumbnail, IonCardTitle, IonCardContent, IonCardSubtitle, IonSegmentButton, IonChip,IonAvatar, IonSearchbar,IonApp, IonTitle, IonContent, IonLabel, IonList, IonItem, IonCard, IonInput, IonSpinner, IonButtons, IonButton, IonIcon, IonImg, IonCol, IonRow, IonBackButton, IonGrid } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonFab,IonFabList,  IonFabButton, IonBadge, IonFooter,IonSegment,IonCardHeader, IonThumbnail, IonCardTitle, IonCardContent, IonCardSubtitle, IonSegmentButton, IonChip,IonAvatar, IonSearchbar,IonApp, IonTitle, IonContent, IonLabel, IonList, IonItem, IonCard, IonInput, IonSpinner, IonButtons, IonButton, IonIcon, IonImg, IonCol, IonRow, IonBackButton, IonGrid } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 
 import { IoniconsModule } from '../common/modules/ionicons.module';
@@ -16,8 +16,8 @@ import { AuthService } from '../common/services/auth.service';
 
 import { Marca } from '../common/models/marca.model';
 import { Productoferta } from '../common/models/productofree.model';
-
-
+import { CartItem } from '../common/models/carrito.models';
+import { CartService } from '../common/services/cart.service';
 
 
 
@@ -32,6 +32,7 @@ import { Productoferta } from '../common/models/productofree.model';
     IoniconsModule,
     CommonModule,
     IonChip,
+    IonBadge,
     IonAvatar,
 IonFabList,
     IonThumbnail,
@@ -59,6 +60,7 @@ producto: Producto | undefined;
 selectedProduct: any;
 
 marcas: Marca[] = [];
+  totalItems: number = 0;
 
 
   isSearching: boolean = false;  // Nueva variable de estado
@@ -97,7 +99,7 @@ comprar() {
 
 
   constructor( private router: Router,private firestoreService: FirestoreService,
-    private alertController: AlertController,private authService: AuthService) {
+    private alertController: AlertController,private authService: AuthService,private cartService: CartService) {
 
 
   }
@@ -167,6 +169,9 @@ navigateToDetailOferta(productOfer:Productoferta){
 
  async ngOnInit() {
 
+ this.cartService.getCart().subscribe(items => {
+      this.updateTotalItems(items);
+    });
 
 
 await this.cargarProductos();
@@ -175,6 +180,10 @@ this.cargarProductosOferta()
 
 this.clearSearch();
 
+  }
+
+   updateTotalItems(cartItems: CartItem[]) {
+    this.totalItems = cartItems.reduce((total, item) => total + item.cantidad, 0);
   }
 
    onMarcaClick(marcaId: string) {
@@ -201,18 +210,42 @@ this.clearSearch();
 
 
 
-  search(event: any) {
-    const query = event.target.value.toLowerCase();
-    if (query.trim() === '') {
-      this.productosFiltrados = [];
-      this.isSearching = false;  // Cambia el estado de búsqueda
-    } else {
-      this.productosFiltrados = this.productos.filter(producto =>
-        producto.nombre.toLowerCase().includes(query)
-      );
-      this.isSearching = true;  // Cambia el estado de búsqueda
-    }
+  // search(event: any) {
+  //   const query = event.target.value.toLowerCase();
+  //   if (query.trim() === '') {
+  //     this.productosFiltrados = [];
+  //     this.isSearching = false;  // Cambia el estado de búsqueda
+  //   } else {
+  //     this.productosFiltrados = this.productos.filter(producto =>
+  //       // producto.nombre.toLowerCase().includes(query)
+  //             producto.nombre.toLowerCase().includes(query) || producto.codigo.toLowerCase().includes(query)
+
+  //     );
+  //     this.isSearching = true;  // Cambia el estado de búsqueda
+  //   }
+  // }
+
+search(event: any) {
+  const query = event.target.value.toLowerCase().trim();
+  if (query === '') {
+    this.productosFiltrados = [];
+    this.isSearching = false;
+  } else {
+    this.productosFiltrados = this.productos.filter(producto => {
+      const nombreMatches = producto.nombre && producto.nombre.toLowerCase().includes(query);
+      const codigoMatches = producto.codigo && producto.codigo.toLowerCase().includes(query); // Modificación aquí
+      return nombreMatches || codigoMatches;
+    });
+    this.isSearching = true;
   }
+}
+
+
+formatearPrecio(precio: number): string {
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(precio);
+}
+
+
 
   clearSearch() {
     const searchbar = document.querySelector('ion-searchbar');

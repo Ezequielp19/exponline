@@ -28,8 +28,21 @@
         <ion-card-content>
           <h2>{{ product.nombre }}</h2>
 
-          <p>Precio Final: ${{ product.precioFinal }}</p>
+          <p>Precio Final: ${{ product.precioFinal | number:'1.2-2' }}</p>
 
+
+
+            <!-- <div style="display: flex; justify-content: space-between; align-items: center;">
+              <ion-button (click)="updateCart(product, -1)">&#8592;</ion-button>
+              <span>{{ cantidades[product.id] }}</span>
+              <ion-button (click)="updateCart(product, 1)">&#8594;</ion-button>
+            </div> -->
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <ion-button size="small" (click)="updateCart(product, -1)">-</ion-button>
+              <input type="number" [value]="cantidades[product.id]" style="width: 40px; text-align: center; background-color: white;  " readonly />
+              <ion-button size="small" (click)="updateCart(product, 1)">+</ion-button>
+            </div>
 
 
            <ion-button expand="full" color="primary" (click)="addToCart(product)">Agregar 🛒</ion-button>
@@ -39,6 +52,8 @@
     </ion-col>
   </ion-row>
 </ion-grid>
+
+<br>
 
 <div class="pagination-buttons" style="display: flex; justify-content: center; align-items: center;">
     <ion-button (click)="goToPreviousPage()" [disabled]="currentPage === 1">Anterior</ion-button>

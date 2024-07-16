@@ -100,11 +100,27 @@ export class F931Component implements OnInit {
     window.open(url, '_blank');
   }
 
+    cantidades: { [productId: string]: number } = {};
+
+
   async cargarProductos() {
     this.productos = await this.firestoreService.getProductos();
+    this.productos.forEach(product => this.cantidades[product.id] = 0);
+
     this.paginatedProductos = this.getProductosPaginados();
- 
+
   }
+
+   increaseQuantity(productId: string) {
+    this.cantidades[productId]++;
+  }
+
+  decreaseQuantity(productId: string) {
+    if (this.cantidades[productId] > 1) {
+      this.cantidades[productId]--;
+    }
+  }
+
 
   paginatedProductos: Producto[] = [];
   currentPage: number = 1;
@@ -151,8 +167,30 @@ selectedProduct: any;
   //   this.cartService.addToCart(product);
   // }
 
+  //  async updateCart(product: Producto, delta: number) {
+  //   const currentQuantity = this.cantidades[product.id];
+  //   const newQuantity = currentQuantity + delta;
+
+  //   if (newQuantity > 0) {
+  //     this.cantidades[product.id] = newQuantity;
+  //     this.cartService.addToCart(product, delta);
+  //     await this.showAlert(product.nombre);
+  //   } else {
+  //     this.cantidades[product.id] = 1;
+  //   }
+  // }
+
+  async updateCart(product: Producto, change: number) {
+    if (this.cantidades[product.id] + change >= 1) {
+      this.cantidades[product.id] += change;
+      this.cartService.addToCart(product, change);
+      await this.showAlert(product.nombre);
+    }
+  }
+
   async addToCart(product: Producto) {
-    this.cartService.addToCart(product);
+    const cantidad = this.cantidades[product.id];
+    this.cartService.addToCart(product, cantidad);
     await this.showAlert(product.nombre);
   }
 

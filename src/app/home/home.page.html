@@ -97,7 +97,7 @@
             </div>
             <ion-card-content>
               <h2><strong>{{ oferta.nombre }}</strong></h2>
-              <p><strong>Precio Final: ${{ oferta.precioFinal }}</strong></p>
+              <p><strong>Precio Final: ${{ oferta.precioFinal | number:'1.2-2' }}</strong></p>
               <ion-button expand="full" color="primary" (click)="navigateToDetailOferta(oferta)">Ver más</ion-button>
             </ion-card-content>
           </ion-card>
@@ -171,6 +171,7 @@
 <ion-fab vertical="bottom" horizontal="end" slot="fixed" style="margin-bottom: 80px;">
   <ion-fab-button color="primary" (click)="goToCart()">
     <ion-icon name="cart"></ion-icon>
+          <ion-badge color="danger" *ngIf="totalItems > 0">{{ totalItems }}</ion-badge>
   </ion-fab-button>
 </ion-fab>
 

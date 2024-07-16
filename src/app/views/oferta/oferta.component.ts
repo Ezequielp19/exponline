@@ -53,15 +53,22 @@ export class ProductofertaDetailComponent implements OnInit {
     await this.showAlert(product.nombre);
   }
 
-  async showAlert(productName: string) {
-    const alert = await this.alertController.create({
-      header: 'Producto Agregado',
-      message: `${productName} ha sido agregado al carrito.`,
-      buttons: ['OK'],
-    });
 
-    await alert.present();
-  }
+  async showAlert(productName: string) {
+  const message = `${productName} ha sido agregado al carrito.`;
+  window.alert(message);
+}
+
+
+  // async showAlert(productName: string) {
+  //   const alert = await this.alertController.create({
+  //     header: 'Producto Agregado',
+  //     message: `${productName} ha sido agregado al carrito.`,
+  //     buttons: ['OK'],
+  //   });
+
+  //   await alert.present();
+  // }
 
   goToCart() {
     this.router.navigate(['/carrito']);

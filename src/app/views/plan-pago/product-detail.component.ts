@@ -1,4 +1,5 @@
-import { IonContent, IonCard, IonIcon, IonCardHeader, IonCardTitle, IonCardContent, IonButton,IonTitle, IonButtons, IonToolbar, IonBackButton, IonHeader, IonGrid, IonRow, IonCol, IonSpinner } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
+import { IonContent, IonCard, IonIcon, IonLabel,IonCardHeader,  IonCardTitle, IonCardContent, IonButton,IonTitle, IonButtons, IonToolbar, IonBackButton, IonHeader, IonGrid, IonRow, IonCol, IonSpinner, IonItem, IonInput } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from '../../common/services/firestore.service';
@@ -17,7 +18,7 @@ import { AlertController } from '@ionic/angular';
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss'],
   standalone: true,
-  imports: [IonSpinner, IonCol, IonRow, IonIcon, IonGrid, IonHeader, IonBackButton, IonToolbar, IonButtons,IonButton, IonTitle, CommonModule, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent]
+  imports: [IonInput, IonItem, FormsModule, IonSpinner, IonCol, IonLabel, IonRow, IonIcon, IonGrid, IonHeader, IonBackButton, IonToolbar, IonButtons,IonButton, IonTitle, CommonModule, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent]
 })
 export class ProductDetailComponent  implements OnInit {
   planPagoDocs$: Observable<any[]>;
@@ -25,6 +26,8 @@ export class ProductDetailComponent  implements OnInit {
 
    productId: string;
   producto: Producto | undefined;
+cantidad: number = 0;
+
 
   constructor(
     private firestoreService: FirestoreService,
@@ -42,9 +45,11 @@ export class ProductDetailComponent  implements OnInit {
   }
 
 
+
 async loadProduct() {
     if (this.productId) {
       this.producto = await this.firestoreService.getProductoById(this.productId);
+
     }
   }
 
@@ -55,23 +60,48 @@ async loadProduct() {
   }
 
 async addToCart(product: Producto) {
-    this.cartService.addToCart(product);
+    this.cartService.addToCart(product,this.cantidad);
     await this.showAlert(product.nombre);
   }
 
-  async showAlert(productName: string) {
-    const alert = await this.alertController.create({
-      header: 'Producto Agregado',
-      message: `${productName} ha sido agregado al carrito.`,
-      buttons: ['OK'],
-    });
-
-    await alert.present();
+ increaseQuantity() {
+    if (this.cantidad < 10) { // Ajusta según tus requisitos
+      this.cantidad++;
+    }
   }
+
+  decreaseQuantity() {
+    if (this.cantidad > 1) {
+      this.cantidad--;
+    }
+  }
+
+
+  
+
+
+async showAlert(productName: string) {
+  const message = `${productName} ha sido agregado al carrito.`;
+  window.alert(message);
+}
+
+
+
+  // async showAlert(productName: string) {
+  //   const alert = await this.alertController.create({
+  //     header: 'Producto Agregado',
+  //     message: `${productName} ha sido agregado al carrito.`,
+  //     buttons: ['OK'],
+  //   });
+
+  //   await alert.present();
+  // }
 
   goToCart() {
     this.router.navigate(['/carrito']);
   }
+
+
 
 
 

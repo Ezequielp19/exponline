@@ -20,10 +20,20 @@
     <ion-card-content>
       <h2 class="product-title"> <strong>  {{ producto.nombre }}</strong></h2>
       <p class="product-description">  <strong> {{ producto.descripcion }} </strong></p>
-      <p><strong>Precio Final:</strong> ${{ producto.precioFinal }}</p>
+      <p><strong>Precio Final:</strong> ${{ producto.precioFinal | number:'1.2-2' }}</p>
       <p><strong>Codigo:</strong> {{ producto.codigo  }}</p>
       <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
       <p><strong>Marca:</strong> {{ producto.marca.nombre }}</p>
+
+
+       <div style="display: flex; justify-content: space-between; align-items: center;">
+      <ion-button size="small" (click)="decreaseQuantity()">-</ion-button>
+      <ion-input [(ngModel)]="cantidad" min="1" max="10" style="width: 40px; text-align: center; background-color: white;"></ion-input>
+      <ion-button size="small" (click)="increaseQuantity()">+</ion-button>
+    </div>
+
+
+
       <ion-button expand="full" color="primary" (click)="addToCart(producto)"  style="color: white;">Agregar 🛒</ion-button>
     </ion-card-content>
 
