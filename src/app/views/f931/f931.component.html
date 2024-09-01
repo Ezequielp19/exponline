@@ -28,7 +28,7 @@
         <ion-card-content>
           <h2>{{ product.nombre }}</h2>
 
-          <p>Precio Final: ${{ product.precioFinal | number:'1.2-2' }}</p>
+          <p *ngIf="isLoggedIn">Precio Final: ${{ product.precioFinal | number:'1.2-2' }}</p>
 
 
 

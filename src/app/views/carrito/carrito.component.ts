@@ -11,6 +11,8 @@ import { IonicModule } from '@ionic/angular';
 import { Router, RouterModule } from '@angular/router';
 import { Producto } from 'src/app/common/models/producto.model';
 import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
+import { AuthService } from '../../common/services/auth.service';
+
 
 @Component({
   selector: 'app-carrito',
@@ -33,10 +35,10 @@ export class CarritoComponent implements OnInit {
 
   totalItems: number = 0;
 
- 
 
 
-  constructor(private cartService: CartService,private router: Router) {}
+
+  constructor(private cartService: CartService,private router: Router,private authService: AuthService) {}
 
   ngOnInit(): void {
     this.cartService.getCart().subscribe(items => {
@@ -46,6 +48,7 @@ export class CarritoComponent implements OnInit {
               this.updateTotalItems();
 
     });
+    this.checkLoginStatus();
   }
 
    updateTotalItems() {
@@ -74,6 +77,7 @@ export class CarritoComponent implements OnInit {
       .then((response: EmailJSResponseStatus) => {
         console.log('Correo enviado exitosamente', response.status, response.text);
         alert('Tu pedido ha sido enviado. Gracias por tu compra.');
+          this.cartService.clearCart();
         this.router.navigate(['/']);
       }, (error) => {
         console.error('Error al enviar el correo:', error);
@@ -86,9 +90,31 @@ export class CarritoComponent implements OnInit {
     this.total = this.cartService.getTotal();
     this.updateTotalItems();
 
-
-
   }
+
+
+
+  //   async checkLoginStatus() {
+  //   this.authService.isLoggedIn().subscribe((loggedIn: boolean) => {
+  //     this.isLoggedIn = loggedIn;
+  //   });
+  // }
+
+
+  async checkLoginStatus() {
+  this.authService.user$.subscribe(user => {
+    if (user) {
+      this.isLoggedIn = true;
+      this.from_name = `${user.nombre} ${user.apellido}`;
+      this.from_email = user.email;
+    } else {
+      this.isLoggedIn = false;
+    }
+  });
+}
+
+    isLoggedIn: boolean = false; // Variable para controlar si el usuario está logueado
+
 
 
 }

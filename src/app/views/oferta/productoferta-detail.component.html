@@ -20,9 +20,9 @@
     <ion-card-content>
       <h2 class="product-title"> <strong> {{ productoferta.nombre }}</strong></h2>
       <p class="product-description"> <strong> {{ productoferta.descripcion }} </strong></p>
-      <p><strong>Precio Original:</strong> <del>${{ calculateOriginalPrice(productoferta.precioFinal, productoferta.descuento) }}</del></p>
-      <p><strong>Descuento:</strong> {{ productoferta.descuento }}%</p>
-      <p><strong>Precio Final:</strong> ${{ productoferta.precioFinal | number:'1.2-2' }}</p>
+      <p *ngIf="isLoggedIn"><strong>Precio Original:</strong> <del>${{ calculateOriginalPrice(productoferta.precioFinal, productoferta.descuento) }}</del></p>
+      <p *ngIf="isLoggedIn"><strong>Descuento:</strong> {{ productoferta.descuento }}%</p>
+      <p *ngIf="isLoggedIn"><strong>Precio Final:</strong> ${{ productoferta.precioFinal | number:'1.2-2' }}</p>
       <p><strong>Codigo:</strong> {{ productoferta.codigo }}</p>
       <p><strong>Categoría:</strong> {{ productoferta.categoria.nombre }}</p>
       <p><strong>Marca:</strong> {{ productoferta.marca.nombre }}</p>

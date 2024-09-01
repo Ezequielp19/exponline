@@ -24,8 +24,17 @@ export class RegisterComponent {
 
   constructor(private authService: AuthService,private router: Router,) {}
 
+//  register(userData: UserI) {
+//     this.authService.register(userData);
+//   }
+
  register(userData: UserI) { // Pasa los datos del usuario
-    this.authService.register(userData);
+    this.authService.register(userData).then(() => {
+      // Si el registro es exitoso, redirigir o mostrar un mensaje
+      this.router.navigate(['/login']);
+    }).catch(error => {
+      console.error('Error al registrar:', error);
+    });
   }
 
 navigateToLogin() {

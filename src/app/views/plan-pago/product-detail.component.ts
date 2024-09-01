@@ -12,6 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Productoferta } from 'src/app/common/models/productofree.model';
 import { CartService } from 'src/app/common/services/cart.service';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '../../common/services/auth.service';
+
 
 @Component({
    selector: 'app-product-detail',
@@ -27,6 +29,8 @@ export class ProductDetailComponent  implements OnInit {
    productId: string;
   producto: Producto | undefined;
 cantidad: number = 0;
+  isLoading: boolean = true;
+  isLoggedIn: boolean = false;
 
 
   constructor(
@@ -37,11 +41,17 @@ cantidad: number = 0;
     private route: ActivatedRoute,
     private alertController: AlertController,
     private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.productId = this.route.snapshot.paramMap.get('id');
     this.loadProduct();
+
+    this.checkLoginStatus();
+
+
+
   }
 
 
@@ -51,6 +61,8 @@ async loadProduct() {
       this.producto = await this.firestoreService.getProductoById(this.productId);
 
     }
+        this.isLoading = false; // Una vez que el producto se carga, detén el spinner
+
   }
 
   comprar() {
@@ -76,8 +88,15 @@ async addToCart(product: Producto) {
     }
   }
 
+ async checkLoginStatus() {
+    this.authService.isLoggedIn().subscribe((loggedIn: boolean) => {
+      this.isLoggedIn = loggedIn;
+    });
+  }
 
   
+
+
 
 
 async showAlert(productName: string) {

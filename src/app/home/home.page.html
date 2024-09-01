@@ -11,7 +11,7 @@
         </ion-col>
         <ion-col size="3">
           <ng-container *ngIf="user$ | async as user; else loginButton">
-            <p style="color: white;">Bienvenido {{ user.nombre }} </p>
+            <p style="color: white;">Bienvenido {{ user?.nombre }} </p>
             <ion-button (click)="logout()">Cerrar sesión</ion-button>
           </ng-container>
           <ng-template #loginButton>
@@ -95,11 +95,23 @@
                 <p>Más Info</p>
               </div>
             </div>
-            <ion-card-content>
+            <!-- <ion-card-content>
               <h2><strong>{{ oferta.nombre }}</strong></h2>
               <p><strong>Precio Final: ${{ oferta.precioFinal | number:'1.2-2' }}</strong></p>
               <ion-button expand="full" color="primary" (click)="navigateToDetailOferta(oferta)">Ver más</ion-button>
+            </ion-card-content> -->
+
+<ion-card-content>
+              <h2><strong>{{ oferta.nombre }}</strong></h2>
+              <ng-container *ngIf="user$ | async as user; else loginToViewPrice">
+                <p><strong>Precio Final: ${{ oferta.precioFinal | number:'1.2-2' }}</strong></p>
+              </ng-container>
+              <ng-template #loginToViewPrice>
+                <p><strong>Inicia sesión para ver el precio</strong></p>
+              </ng-template>
+              <ion-button expand="full" color="primary" (click)="navigateToDetailOferta(oferta)">Ver más</ion-button>
             </ion-card-content>
+
           </ion-card>
         </ion-col>
       </ion-row>
@@ -132,11 +144,24 @@
                 <p>Más Info</p>
               </div>
             </div>
-            <ion-card-content>
+            <!-- <ion-card-content>
               <h2><strong>{{ product.nombre }}</strong></h2>
               <p><strong>Precio Final: ${{ product.precioFinal }}</strong></p>
               <ion-button expand="full" color="primary" (click)="navigateToDetail(product)">Ver más</ion-button>
+            </ion-card-content> -->
+
+
+<ion-card-content>
+              <h2><strong>{{ product.nombre }}</strong></h2>
+              <ng-container *ngIf="user$ | async as user; else loginToViewPrice">
+                <p><strong>Precio Final: ${{ product.precioFinal }}</strong></p>
+              </ng-container>
+              <ng-template #loginToViewPrice>
+                <p><strong>Inicia sesión para ver el precio</strong></p>
+              </ng-template>
+              <ion-button expand="full" color="primary" (click)="navigateToDetail(product)">Ver más</ion-button>
             </ion-card-content>
+
           </ion-card>
         </ion-col>
       </ion-row>
@@ -149,11 +174,25 @@
         <ion-thumbnail slot="start">
           <img [src]="product.imagen" />
         </ion-thumbnail>
-        <ion-label>
+        <!-- <ion-label>
           <h2>{{ product.nombre }}</h2>
           <p>Codigo: {{ product.codigo }}</p>
           <p>Precio Final: ${{ product.precioFinal }}</p>
+        </ion-label> -->
+
+
+<ion-label>
+          <h2>{{ product.nombre }}</h2>
+          <p>Codigo: {{ product.codigo }}</p>
+          <ng-container *ngIf="user$ | async as user; else loginToViewPrice">
+            <p>Precio Final: ${{ product.precioFinal | currency:'ARS':'symbol':'1.2-2' }}</p>
+          </ng-container>
+          <ng-template #loginToViewPrice>
+            <p>Inicia sesión para ver el precio</p>
+          </ng-template>
         </ion-label>
+
+
         <ion-button fill="clear" color="primary" (click)="navigateToDetail(product)">Ver</ion-button>
       </ion-item>
     </ion-list>

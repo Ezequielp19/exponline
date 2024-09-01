@@ -9,6 +9,8 @@ import { Productoferta } from 'src/app/common/models/productofree.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from 'src/app/common/services/cart.service';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '../../common/services/auth.service';
+
 
 @Component({
   selector: 'app-productoferta-detail',
@@ -29,12 +31,24 @@ export class ProductofertaDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private alertController: AlertController,
     private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.productId = this.route.snapshot.paramMap.get('id');
     this.loadProduct();
+    this.checkLoginStatus();
   }
+
+
+    async checkLoginStatus() {
+    this.authService.isLoggedIn().subscribe((loggedIn: boolean) => {
+      this.isLoggedIn = loggedIn;
+    });
+  }
+
+    isLoggedIn: boolean = false; // Variable para controlar si el usuario está logueado
+
 
   async loadProduct() {
     if (this.productId) {

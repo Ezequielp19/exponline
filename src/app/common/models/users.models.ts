@@ -4,4 +4,6 @@ export interface UserI {
   apellido: string;
    email: string;
   password: string;
+    approved?: boolean; // Agregar esta línea
+
 }

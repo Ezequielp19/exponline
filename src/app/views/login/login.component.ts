@@ -40,9 +40,17 @@ constructor(
 
 
 
- login() {
-    this.authService.login(this.email, this.password);
-     this.router.navigate(['/home']);
+//  login() {
+//     this.authService.login(this.email, this.password);
+//      this.router.navigate(['/home']);
+//   }
+
+ async login() {
+    try {
+      await this.authService.login(this.email, this.password);
+    } catch (error) {
+      this.mostrarAlertaError('No se pudo iniciar sesión. Verifica tus credenciales o contacta al administrador.');
+    }
   }
 
 

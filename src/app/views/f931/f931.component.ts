@@ -40,6 +40,8 @@ import { CommonModule } from '@angular/common';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { Producto } from 'src/app/common/models/producto.model';
 import { CartService } from 'src/app/common/services/cart.service';
+import { AuthService } from '../../common/services/auth.service';
+
 
 @Component({
   selector: 'app-f931',
@@ -89,12 +91,26 @@ export class F931Component implements OnInit {
     private firestoreService: FirestoreService,
     private cartService: CartService,
     private router: Router,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private authService: AuthService
   ) {}
 
   async ngOnInit() {
     this.cargarProductos();
+
+     this.checkLoginStatus();
   }
+
+
+  async checkLoginStatus() {
+    this.authService.isLoggedIn().subscribe((loggedIn: boolean) => {
+      this.isLoggedIn = loggedIn;
+    });
+  }
+
+    isLoggedIn: boolean = false; // Variable para controlar si el usuario está logueado
+
+
 
   verPdf(url: string) {
     window.open(url, '_blank');

@@ -7,6 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { Categoria } from 'src/app/common/models/categoria.model';
 import { Producto } from 'src/app/common/models/producto.model';
 import { Router } from '@angular/router';
+import { AuthService } from '../../common/services/auth.service';
+
 
 @Component({
   selector: 'app-cert-ingresos',
@@ -21,11 +23,25 @@ export class CertIngresosComponent implements OnInit {
   productos: Producto[] = [];
   selectedCategoria: Categoria | undefined;
 
-  constructor(private firestoreService: FirestoreService,private router: Router,) {}
+  constructor(private firestoreService: FirestoreService,private router: Router,private authService: AuthService
+) {}
 
   async ngOnInit() {
     this.loadCategories();
+         this.checkLoginStatus();
+
   }
+
+  async checkLoginStatus() {
+    this.authService.isLoggedIn().subscribe((loggedIn: boolean) => {
+      this.isLoggedIn = loggedIn;
+    });
+  }
+
+    isLoggedIn: boolean = false; // Variable para controlar si el usuario está logueado
+
+
+
 
   async loadCategories() {
     try {

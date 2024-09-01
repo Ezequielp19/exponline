@@ -12,6 +12,15 @@
   </ion-toolbar>
 </ion-header>
 
+
+<!-- Spinner de carga mientras se obtiene el producto -->
+<ion-content *ngIf="isLoading" class="content">
+  <div class="loading-spinner">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+</ion-content>
+
+
 <ion-content *ngIf="producto" class="content">
   <ion-card class="product-card">
     <ion-card-header>
@@ -20,7 +29,12 @@
     <ion-card-content>
       <h2 class="product-title"> <strong>  {{ producto.nombre }}</strong></h2>
       <p class="product-description">  <strong> {{ producto.descripcion }} </strong></p>
-      <p><strong>Precio Final:</strong> ${{ producto.precioFinal | number:'1.2-2' }}</p>
+      <!-- <p><strong>Precio Final:</strong> ${{ producto.precioFinal | number:'1.2-2' }}</p> -->
+
+ <p *ngIf="isLoggedIn">
+        <strong>Precio Final:</strong> ${{ producto.precioFinal | number:'1.2-2' }}
+      </p>
+
       <p><strong>Codigo:</strong> {{ producto.codigo  }}</p>
       <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
       <p><strong>Marca:</strong> {{ producto.marca.nombre }}</p>
@@ -40,10 +54,10 @@
   </ion-card>
 </ion-content>
 
-<ion-content *ngIf="!producto" class="content">
+<!-- <ion-content *ngIf="!producto" class="content">
   <ion-card class="no-product-card">
     <ion-card-content>
       <h2>Producto no encontrado</h2>
     </ion-card-content>
   </ion-card>
-</ion-content>
+</ion-content> -->

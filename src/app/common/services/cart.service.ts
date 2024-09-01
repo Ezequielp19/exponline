@@ -51,9 +51,21 @@ export class CartService {
     this.cartSubject.next(this.items);
   }
 
-  removeFromCart(product: Producto | Productoferta) {
-    this.items = this.items.filter(item => item.producto.id !== product.id);
-    this.cartSubject.next(this.items);
+  // removeFromCart(product: Producto | Productoferta) {
+  //   this.items = this.items.filter(item => item.producto.id !== product.id);
+  //   this.cartSubject.next(this.items);
+  // }
+
+    removeFromCart(product: Producto | Productoferta) {
+    const existingItem = this.items.find(item => item.producto.id === product.id);
+    if (existingItem) {
+      if (existingItem.cantidad > 1) {
+        existingItem.cantidad -= 1;
+      } else {
+        this.items = this.items.filter(item => item.producto.id !== product.id);
+      }
+      this.cartSubject.next(this.items);
+    }
   }
 
   clearCart() {

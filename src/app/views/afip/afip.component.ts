@@ -24,6 +24,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Marca } from '../../common/models/marca.model';
 import { Producto } from 'src/app/common/models/producto.model';
 import { Router } from '@angular/router';
+import * as XLSX from 'xlsx';
+
 
 @Component({
   selector: 'app-afip',
@@ -103,5 +105,61 @@ export class AfipComponent implements OnInit {
 }
 
 
+// downloadPriceList() {
+//     const csvData = this.convertToCSV(this.productos);
+//     const blob = new Blob([csvData], { type: 'text/csv' });
+//     const url = window.URL.createObjectURL(blob);
+//     const a = document.createElement('a');
+//     a.setAttribute('hidden', '');
+//     a.setAttribute('href', url);
+//     a.setAttribute('download', `lista_precios_${this.selectedMarca?.nombre}.csv`);
+//     document.body.appendChild(a);
+//     a.click();
+//     document.body.removeChild(a);
+//   }
 
+//   convertToCSV(objArray: Producto[]): string {
+//     const header = 'Nombre,Codigo,Precio Final,Marca';
+//     const rows = objArray.map(producto =>
+//       `${producto.nombre},${producto.codigo},${producto.precioFinal},${producto.marca.nombre},${producto.categoria}`
+//     ).join('\n');
+//     return header + rows;
+//   }
+
+
+downloadPriceList() {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.productos.map(producto => ({
+      Nombre: producto.nombre,
+      Codigo: producto.codigo,
+      'Precio Final': producto.precioFinal,
+      Marca: producto.marca.nombre,
+      Categoria: producto.categoria
+    })));
+
+    const workbook: XLSX.WorkBook = {
+      Sheets: { 'Lista de Precios': worksheet },
+      SheetNames: ['Lista de Precios']
+    };
+
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    this.saveAsExcelFile(excelBuffer, `lista_precios_${this.selectedMarca?.nombre}`);
+  }
+
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    const url = window.URL.createObjectURL(data);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${fileName}.xlsx`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
 }
+
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+const EXCEL_EXTENSION = '.xlsx';
+
+
+
+
